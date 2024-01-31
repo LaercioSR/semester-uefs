@@ -1,13 +1,13 @@
 import { semesterRepository } from "@ui/repository/semester";
 
-function dateMessage(days: number): string[] {
+function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
   if (days === 0) {
     return ["hoje", "acaba o"];
   }
   if (days === 1) {
     return ["amanhã", "acaba o"];
   }
-  return [`${days} dias`, "para o fim do"];
+  return [`${days} dias`, `para o ${event} do`];
 }
 
 interface SemesterControllerGetDaysOutput {
@@ -24,7 +24,7 @@ async function getDays(): Promise<SemesterControllerGetDaysOutput> {
     };
   } catch {
     const days = await semesterRepository.getDaysStartNext();
-    const messages = dateMessage(days);
+    const messages = dateMessage(days, "início");
     return {
       days: messages[0],
       nextEvent: `${messages[1]} semestre da uefs`,

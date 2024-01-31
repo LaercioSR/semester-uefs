@@ -27,7 +27,7 @@ async function getDaysToEndCurrentSemester(): Promise<number> {
   const today = new Date();
   const currentSemester = await getCurrentSemester();
   const timeToEnd = currentSemester.endDate.getTime() - today.getTime();
-  const daysToEnd = Math.ceil(timeToEnd / (1000 * 60 * 60 * 24));
+  const daysToEnd = Math.round(timeToEnd / (1000 * 60 * 60 * 24));
   return daysToEnd;
 }
 
@@ -50,7 +50,7 @@ async function getDaysToStartNextSemester(): Promise<number> {
   const today = new Date();
   const nextSemester = await getNextSemester();
   const timeToStart = nextSemester.startDate.getTime() - today.getTime();
-  const daysToStart = Math.ceil(timeToStart / (1000 * 60 * 60 * 24));
+  const daysToStart = Math.round(timeToStart / (1000 * 60 * 60 * 24));
   return daysToStart;
 }
 
