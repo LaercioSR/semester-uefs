@@ -12,7 +12,7 @@ export default function Home() {
   const daysToEnd = semesters
     .map((semester) =>
       Math.ceil(
-        (new Date(semester.end_at).getTime() - today.getTime()) /
+        (new Date(semester.endDate).getTime() - today.getTime()) /
           (1000 * 60 * 60 * 24)
       )
     )

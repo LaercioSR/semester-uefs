@@ -23,6 +23,8 @@
       "@components/*": ["./app/components/*"],
       "@contexts/*": ["./app/contexts/*"],
       "@hooks/*": ["./app/hooks/*"],
+      "@server/*": ["./src/server/*"],
+      "@ui/*": ["./src/ui/*"],
       "@core/*": ["./core/*"],
     }
   },
