@@ -2,6 +2,7 @@
 import { Content, Main, Subtitle, Title } from "./style";
 import { semesters } from "./api/db.json";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const today = new Date();
@@ -26,6 +27,7 @@ export default function Home() {
         <Title>{daysToEnd} dias</Title>
         <Subtitle>para o fim do semestre da UEFS</Subtitle>
       </Content>
+      <Footer />
     </Main>
   );
 }

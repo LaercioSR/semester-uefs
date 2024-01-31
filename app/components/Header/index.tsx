@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <Content>
       <NavLogo>
-        <Image src="/logo-uefs.png" alt="UEFS Logo" width={48} height={76} />
+        <Image src="/logo-uefs.png" alt="UEFS Logo" width={48} height={80} />
         <Title>Semestre UEFS</Title>
       </NavLogo>
       <Button onClick={handleToggleTheme}>

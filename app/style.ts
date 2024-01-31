@@ -11,6 +11,7 @@ export const Content = styled("div")`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: calc(100% - 10rem);
 `;
 
 export const Title = styled("h2")`
