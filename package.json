@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "npm run lint -- --fix",
-    "test": "echo ok"
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "start-server-and-test dev http://localhost:3000 cy:run"
   },
   "dependencies": {
     "next": "14.1.0",
@@ -22,6 +24,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "cypress": "^13.6.3",
     "eslint": "^8.36.0",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^8.8.0",

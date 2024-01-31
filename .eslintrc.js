@@ -33,7 +33,7 @@ module.exports = {
       version: "detect",
     },
   },
-  ignorePatterns: ["node_modules/", "_explicacoes/"],
+  ignorePatterns: ["node_modules/"],
   rules: {
     "react/react-in-jsx-scope": "off",
     "no-only-tests/no-only-tests": "error",
