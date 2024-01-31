@@ -16,7 +16,10 @@ const initialContext: ThemeContextType = {
 
 export const ThemeContext = createContext<ThemeContextType>(initialContext);
 
-export function ThemeProvider({ children }: any) {
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
+export function ThemeProvider({ children }: ThemeProviderProps) {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   function toggleTheme() {
