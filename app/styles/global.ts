@@ -26,6 +26,11 @@ export const GlobalStyle = createGlobalStyle`
 
   a {
     text-decoration: none;
+    color: ${(props) => props.theme["secondary"]};
+    transition: color 0.3s;
+    &:hover {
+      color: ${(props) => props.theme["secondary"]}B3;
+    }
   }
 
   button {
