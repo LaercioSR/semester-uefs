@@ -1,8 +1,8 @@
 "use client";
 import { Content, Main, Subtitle, Title } from "./style";
-import { semesters } from "./api/db.json";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import { semesters } from "@core/db.json";
+import Header from "@components/Header";
+import Footer from "@components/Footer";
 
 export default function Home() {
   const today = new Date();

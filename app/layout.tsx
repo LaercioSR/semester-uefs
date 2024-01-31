@@ -1,7 +1,7 @@
 "use client";
 import { GlobalStyle } from "./styles/global";
 import StyledComponentsRegistry from "./lib/registry";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { ThemeProvider } from "@contexts/ThemeContext";
 
 export default function RootLayout({
   children,

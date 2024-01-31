@@ -1,5 +1,5 @@
 import { Content, Text } from "./style";
-import HeartIcon from "../../assets/icons/heart.svg";
+import HeartIcon from "@assets/icons/heart.svg";
 
 export default function Footer() {
   return (
