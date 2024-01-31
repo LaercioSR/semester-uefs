@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Main = styled("main")`
   background-color: ${(props) => props.theme.primary};
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 `;
 
@@ -11,15 +11,14 @@ export const Content = styled("div")`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
 `;
 
-export const Title = styled("h1")`
+export const Title = styled("h2")`
   text-transform: uppercase;
   font-size: 16rem;
 `;
 
-export const Subtitle = styled("h2")`
+export const Subtitle = styled("h3")`
   text-transform: uppercase;
   font-size: 3rem;
 `;

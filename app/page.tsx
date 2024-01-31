@@ -1,6 +1,7 @@
 "use client";
 import { Content, Main, Subtitle, Title } from "./style";
 import { semesters } from "./api/db.json";
+import Header from "./components/Header";
 
 export default function Home() {
   const today = new Date();
@@ -20,6 +21,7 @@ export default function Home() {
 
   return (
     <Main>
+      <Header />
       <Content>
         <Title>{daysToEnd} dias</Title>
         <Subtitle>para o fim do semestre da UEFS</Subtitle>
