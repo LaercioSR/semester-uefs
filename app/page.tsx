@@ -3,6 +3,9 @@ import { Content, Main, Subtitle, Title } from "./style";
 import { semesters } from "@core/db.json";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
+import Head from "next/head";
+import { ThemeProvider } from "@contexts/ThemeContext";
+import { GlobalStyle } from "./styles/global";
 
 export default function Home() {
   const today = new Date();
@@ -21,13 +24,19 @@ export default function Home() {
     }, 999);
 
   return (
-    <Main>
-      <Header />
-      <Content>
-        <Title>{daysToEnd} dias</Title>
-        <Subtitle>para o fim do semestre da UEFS</Subtitle>
-      </Content>
-      <Footer />
-    </Main>
+    <ThemeProvider>
+      <Main>
+        <Head>
+          <title>My page title</title>
+        </Head>
+        <Header />
+        <Content>
+          <Title>{daysToEnd} dias</Title>
+          <Subtitle>para o fim do semestre da UEFS</Subtitle>
+        </Content>
+        <Footer />
+      </Main>
+      <GlobalStyle />
+    </ThemeProvider>
   );
 }

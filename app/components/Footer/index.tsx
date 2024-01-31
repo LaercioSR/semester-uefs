@@ -7,7 +7,7 @@ export default function Footer() {
       <Text>Feito com</Text>
       <HeartIcon />
       <Text>por</Text>
-      <LinkFooter href="https://laerciorios.com" target="_blanket">
+      <LinkFooter href="https://laerciorios.com" target="_blank">
         Laercio Rios
       </LinkFooter>
     </Content>

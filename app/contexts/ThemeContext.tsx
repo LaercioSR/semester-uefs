@@ -1,3 +1,4 @@
+"use client";
 import { createContext, useState } from "react";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import { lightTheme } from "../styles/themes/light";
