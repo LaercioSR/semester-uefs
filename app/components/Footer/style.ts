@@ -34,3 +34,16 @@ export const Text = styled("p")`
     font-size: 0.7rem;
   }
 `;
+
+export const LinkFooter = styled("a")`
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
+`;

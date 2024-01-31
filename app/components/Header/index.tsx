@@ -1,8 +1,8 @@
 import { Button, Content, NavLogo, Title } from "./style";
 import Image from "next/image";
-import DarkModeIcon from "../../assets/icons/dark-mode.svg";
-import LightModeIcon from "../../assets/icons/light-mode.svg";
-import { useTheme } from "../../hooks/useTheme";
+import DarkModeIcon from "@assets/icons/dark-mode.svg";
+import LightModeIcon from "@assets/icons/light-mode.svg";
+import { useTheme } from "@hooks/useTheme";
 
 export default function Header() {
   const { isDarkMode, toggleTheme } = useTheme();

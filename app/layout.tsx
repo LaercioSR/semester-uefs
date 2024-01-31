@@ -1,7 +1,12 @@
-"use client";
-import { GlobalStyle } from "./styles/global";
 import StyledComponentsRegistry from "./lib/registry";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Semestre UEFS",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -10,13 +15,8 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body>
-        <ThemeProvider>
-          <StyledComponentsRegistry>
-            {children}
-            <GlobalStyle />
-          </StyledComponentsRegistry>
-        </ThemeProvider>
+      <body suppressHydrationWarning={true}>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );

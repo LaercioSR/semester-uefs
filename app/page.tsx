@@ -1,33 +1,38 @@
 "use client";
 import { Content, Main, Subtitle, Title } from "./style";
-import { semesters } from "./api/db.json";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "@components/Header";
+import Footer from "@components/Footer";
+import Head from "next/head";
+import { ThemeProvider } from "@contexts/ThemeContext";
+import { GlobalStyle } from "./styles/global";
+import React from "react";
+import { semesterController } from "@ui/controller/semester";
 
 export default function Home() {
-  const today = new Date();
-  const daysToEnd = semesters
-    .map((semester) =>
-      Math.ceil(
-        (new Date(semester.end_at).getTime() - today.getTime()) /
-          (1000 * 60 * 60 * 24)
-      )
-    )
-    .reduce((min, cur) => {
-      if (cur > 0 && cur < min) {
-        return cur;
-      }
-      return min;
-    }, 999);
+  const [fistText, setFistText] = React.useState("");
+  const [secondText, setSecondText] = React.useState("");
+
+  React.useEffect(() => {
+    semesterController.getDays().then(({ days, nextEvent }) => {
+      setFistText(days);
+      setSecondText(nextEvent);
+    });
+  }, []);
 
   return (
-    <Main>
-      <Header />
-      <Content>
-        <Title>{daysToEnd} dias</Title>
-        <Subtitle>para o fim do semestre da UEFS</Subtitle>
-      </Content>
-      <Footer />
-    </Main>
+    <ThemeProvider>
+      <Main>
+        <Head>
+          <title>My page title</title>
+        </Head>
+        <Header />
+        <Content>
+          <Title>{fistText}</Title>
+          <Subtitle>{secondText}</Subtitle>
+        </Content>
+        <Footer />
+      </Main>
+      <GlobalStyle />
+    </ThemeProvider>
   );
 }

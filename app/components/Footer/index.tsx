@@ -1,12 +1,15 @@
-import { Content, Text } from "./style";
-import HeartIcon from "../../assets/icons/heart.svg";
+import { Content, LinkFooter, Text } from "./style";
+import HeartIcon from "@assets/icons/heart.svg";
 
 export default function Footer() {
   return (
     <Content>
       <Text>Feito com</Text>
       <HeartIcon />
-      <Text>por Laercio Rios</Text>
+      <Text>por</Text>
+      <LinkFooter href="https://laerciorios.com" target="_blank">
+        Laercio Rios
+      </LinkFooter>
     </Content>
   );
 }
