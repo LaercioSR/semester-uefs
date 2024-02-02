@@ -1,4 +1,4 @@
-import { semesterRepository } from "@server/repository/semester";
+import { semesterRepository } from "@ui/repository/semester";
 import { tweetRepository } from "@server/repository/tweet";
 import { ApiResponseError } from "twitter-api-v2";
 
@@ -21,18 +21,16 @@ async function postTweetSemesterDay(request: Request) {
 
   let message = "";
   try {
-    const daysToEnd = await semesterRepository.getDaysToEndCurrentSemester();
-    const currentSemester = await semesterRepository.getCurrentSemester();
+    const daysToEnd = await semesterRepository.getDaysEndCurrent();
     const [daysToEndMessage, eventEndMessage] = dateMessage(daysToEnd, "fim");
-    message = `${daysToEndMessage} ${eventEndMessage} semestre ${currentSemester.title} da UEFS`;
+    message = `${daysToEndMessage} ${eventEndMessage} semestre da UEFS`;
   } catch {
-    const daysToStart = await semesterRepository.getDaysToStartNextSemester();
-    const nextSemester = await semesterRepository.getNextSemester();
+    const daysToStart = await semesterRepository.getDaysStartNext();
     const [daysToStartMessage, eventStartMessage] = dateMessage(
       daysToStart,
       "início"
     );
-    message = `${daysToStartMessage} ${eventStartMessage} semestre ${nextSemester.title} da UEFS`;
+    message = `${daysToStartMessage} ${eventStartMessage} semestrexw da UEFS`;
   }
 
   message += "\n\nVeja mais em: https://semestreuefs.laerciorios.com/";

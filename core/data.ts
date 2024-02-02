@@ -8,12 +8,7 @@ interface Semester {
 }
 
 export function read(): Array<Semester> {
-  let dbString;
-  try {
-    dbString = fs.readFileSync(DB_FILE_PATH, "utf-8");
-  } catch {
-    dbString = fs.readFileSync("./db.json", "utf-8");
-  }
+  const dbString = fs.readFileSync(DB_FILE_PATH, "utf-8");
   const db = JSON.parse(dbString || "{}");
   if (!db.semesters) {
     return [];
