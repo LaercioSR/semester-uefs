@@ -12,8 +12,13 @@ function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
   return [`Faltam ${days} dias`, `para o ${event} do`];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function postTweetSemesterDay(request: Request) {
+  if (
+    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   let message = "";
   try {
     const daysToEnd = await semesterRepository.getDaysToEndCurrentSemester();
