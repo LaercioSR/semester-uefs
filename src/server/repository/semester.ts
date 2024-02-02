@@ -27,7 +27,7 @@ async function getDaysToEndCurrentSemester(): Promise<number> {
   const today = new Date();
   const currentSemester = await getCurrentSemester();
   const timeToEnd = currentSemester.endDate.getTime() - today.getTime();
-  const daysToEnd = Math.round(timeToEnd / (1000 * 60 * 60 * 24));
+  const daysToEnd = Math.floor(timeToEnd / (1000 * 60 * 60 * 24));
   return daysToEnd;
 }
 
