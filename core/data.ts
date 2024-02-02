@@ -9,7 +9,7 @@ interface Semester {
 
 export function read(): Array<Semester> {
   // eslint-disable-next-line no-console
-  console.log(process.cwd());
+  throw new Error(process.cwd());
   const dbString = fs.readFileSync(DB_FILE_PATH, "utf-8");
   const db = JSON.parse(dbString || "{}");
   if (!db.semesters) {
