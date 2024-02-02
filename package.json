@@ -17,6 +17,7 @@
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.8",
+    "twitter-api-v2": "^1.16.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
