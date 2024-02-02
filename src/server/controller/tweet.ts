@@ -1,4 +1,4 @@
-import { semesterRepository } from "@ui/repository/semester";
+import { semesterRepository } from "@server/repository/semester";
 import { tweetRepository } from "@server/repository/tweet";
 import { ApiResponseError } from "twitter-api-v2";
 
@@ -12,25 +12,22 @@ function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
   return [`Faltam ${days} dias`, `para o ${event} do`];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function postTweetSemesterDay(request: Request) {
-  if (
-    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
-  ) {
-    return new Response("Unauthorized", { status: 401 });
-  }
-
   let message = "";
   try {
-    const daysToEnd = await semesterRepository.getDaysEndCurrent();
+    const daysToEnd = await semesterRepository.getDaysToEndCurrentSemester();
+    const currentSemester = await semesterRepository.getCurrentSemester();
     const [daysToEndMessage, eventEndMessage] = dateMessage(daysToEnd, "fim");
-    message = `${daysToEndMessage} ${eventEndMessage} semestre da UEFS`;
+    message = `${daysToEndMessage} ${eventEndMessage} semestre ${currentSemester.title} da UEFS`;
   } catch {
-    const daysToStart = await semesterRepository.getDaysStartNext();
+    const daysToStart = await semesterRepository.getDaysToStartNextSemester();
+    const nextSemester = await semesterRepository.getNextSemester();
     const [daysToStartMessage, eventStartMessage] = dateMessage(
       daysToStart,
       "início"
     );
-    message = `${daysToStartMessage} ${eventStartMessage} semestrexw da UEFS`;
+    message = `${daysToStartMessage} ${eventStartMessage} semestre ${nextSemester.title} da UEFS`;
   }
 
   message += "\n\nVeja mais em: https://semestreuefs.laerciorios.com/";
