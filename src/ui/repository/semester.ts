@@ -1,7 +1,11 @@
 import { z as schema } from "zod";
 
 async function getDaysEndCurrent(): Promise<number> {
-  return fetch(`/api/semesters/current-days-end`).then(async (response) => {
+  const { signal } = new AbortController();
+  return fetch(`/api/semesters/current-days-end`, {
+    signal,
+    cache: "no-store",
+  }).then(async (response) => {
     const data = await response.json();
     const dataSchema = schema.object({
       days: schema.number(),
@@ -17,7 +21,11 @@ async function getDaysEndCurrent(): Promise<number> {
 }
 
 async function getDaysStartNext(): Promise<number> {
-  return fetch(`/api/semesters/next-days-start`).then(async (response) => {
+  const { signal } = new AbortController();
+  return fetch(`/api/semesters/next-days-start`, {
+    signal,
+    cache: "no-store",
+  }).then(async (response) => {
     const data = await response.json();
     const dataSchema = schema.object({
       days: schema.number(),
