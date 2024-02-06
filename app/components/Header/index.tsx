@@ -24,7 +24,12 @@ export default function Header() {
   return (
     <Content>
       <LeftSide>
-        <Image src="/logo-uefs.png" alt="UEFS Logo" width={48} height={80} />
+        <Image
+          src="/logo.svg"
+          alt="Semestre UEFS Logo"
+          width={48}
+          height={80}
+        />
         <Title>Semestre UEFS</Title>
       </LeftSide>
       <RightSide>
