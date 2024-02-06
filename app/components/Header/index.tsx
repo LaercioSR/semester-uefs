@@ -1,7 +1,16 @@
-import { Button, Content, NavLogo, Title } from "./style";
+import {
+  HeaderButton,
+  Content,
+  LeftSide,
+  RightSide,
+  SocialMediaLink,
+  Title,
+  VerticalLine,
+} from "./style";
 import Image from "next/image";
 import DarkModeIcon from "@assets/icons/dark-mode.svg";
 import LightModeIcon from "@assets/icons/light-mode.svg";
+import XIcon from "@assets/icons/x.svg";
 import { useTheme } from "@hooks/useTheme";
 
 export default function Header() {
@@ -14,13 +23,19 @@ export default function Header() {
 
   return (
     <Content>
-      <NavLogo>
+      <LeftSide>
         <Image src="/logo-uefs.png" alt="UEFS Logo" width={48} height={80} />
         <Title>Semestre UEFS</Title>
-      </NavLogo>
-      <Button onClick={handleToggleTheme}>
-        {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
-      </Button>
+      </LeftSide>
+      <RightSide>
+        <SocialMediaLink href="https://x.com/uefssemestre" target="_blank">
+          <XIcon />
+        </SocialMediaLink>
+        <VerticalLine />
+        <HeaderButton onClick={handleToggleTheme}>
+          {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+        </HeaderButton>
+      </RightSide>
     </Content>
   );
 }
