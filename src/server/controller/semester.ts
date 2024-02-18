@@ -2,16 +2,22 @@
 import { semesterRepository } from "../repository/semester";
 
 async function getDaysToEndCurrentSemester(_req: Request) {
-  const days = await semesterRepository.getDaysToEndCurrentSemester();
-  return new Response(JSON.stringify({ days }), {
+  const response = await semesterRepository.getDaysToEndCurrentSemester();
+  return new Response(JSON.stringify(response), {
     status: 200,
+    headers: {
+      "Cache-Control": "no-store, must-revalidate",
+    },
   });
 }
 
 async function getDaysToStartNextSemester(_req: Request) {
-  const days = await semesterRepository.getDaysToStartNextSemester();
-  return new Response(JSON.stringify({ days }), {
+  const response = await semesterRepository.getDaysToStartNextSemester();
+  return new Response(JSON.stringify(response), {
     status: 200,
+    headers: {
+      "Cache-Control": "no-store, must-revalidate",
+    },
   });
 }
 

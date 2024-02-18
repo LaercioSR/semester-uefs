@@ -16,13 +16,13 @@ function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
 async function postTweetSemesterDay(request: Request) {
   let message = "";
   try {
-    const daysToEnd = await semesterRepository.getDaysToEndCurrentSemester();
-    const currentSemester = await semesterRepository.getCurrentSemester();
+    const { days: daysToEnd, semester: currentSemester } =
+      await semesterRepository.getDaysToEndCurrentSemester();
     const [daysToEndMessage, eventEndMessage] = dateMessage(daysToEnd, "fim");
     message = `${daysToEndMessage} ${eventEndMessage} semestre ${currentSemester.title} da UEFS`;
   } catch {
-    const daysToStart = await semesterRepository.getDaysToStartNextSemester();
-    const nextSemester = await semesterRepository.getNextSemester();
+    const { days: daysToStart, semester: nextSemester } =
+      await semesterRepository.getDaysToStartNextSemester();
     const [daysToStartMessage, eventStartMessage] = dateMessage(
       daysToStart,
       "início"

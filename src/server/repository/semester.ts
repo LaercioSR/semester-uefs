@@ -23,12 +23,21 @@ async function getCurrentSemester(): Promise<Semester> {
   return semester;
 }
 
-async function getDaysToEndCurrentSemester(): Promise<number> {
+interface GetDaysToEndCurrentResponse {
+  days: number;
+  semester: Semester;
+  currentDate: string;
+}
+async function getDaysToEndCurrentSemester(): Promise<GetDaysToEndCurrentResponse> {
   const today = new Date();
   const currentSemester = await getCurrentSemester();
   const timeToEnd = currentSemester.endDate.getTime() - today.getTime();
   const daysToEnd = Math.floor(timeToEnd / (1000 * 60 * 60 * 24));
-  return daysToEnd;
+  return {
+    days: daysToEnd,
+    semester: currentSemester,
+    currentDate: today.toISOString(),
+  };
 }
 
 async function getNextSemester(): Promise<Semester> {
@@ -46,12 +55,22 @@ async function getNextSemester(): Promise<Semester> {
   return semester;
 }
 
-async function getDaysToStartNextSemester(): Promise<number> {
+interface GetDaysToStartNextResponse {
+  days: number;
+  semester: Semester;
+  currentDate: string;
+}
+async function getDaysToStartNextSemester(): Promise<GetDaysToStartNextResponse> {
   const today = new Date();
   const nextSemester = await getNextSemester();
   const timeToStart = nextSemester.startDate.getTime() - today.getTime();
   const daysToStart = Math.round(timeToStart / (1000 * 60 * 60 * 24));
-  return daysToStart;
+
+  return {
+    days: daysToStart,
+    semester: nextSemester,
+    currentDate: today.toISOString(),
+  };
 }
 
 export const semesterRepository = {
