@@ -1,11 +1,11 @@
 import { z as schema } from "zod";
 export const SemesterSchema = schema.object({
   title: schema.string(),
-  startDate: schema.string().transform((date) => {
-    return new Date(`${date} 00:00:00`);
+  start_date: schema.string().transform((date) => {
+    return new Date(`${date}T00:00:00.000z`);
   }),
-  endDate: schema.string().transform((date) => {
-    return new Date(`${date} 23:59:59`);
+  end_date: schema.string().transform((date) => {
+    return new Date(`${date}T23:59:59.000z`);
   }),
 });
 
