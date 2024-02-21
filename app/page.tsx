@@ -8,6 +8,8 @@ import { GlobalStyle } from "./styles/global";
 import React from "react";
 import { semesterController } from "@ui/controller/semester";
 
+export const revalidate = 86400;
+
 export default function Home() {
   const [fistText, setFistText] = React.useState("");
   const [secondText, setSecondText] = React.useState("");
