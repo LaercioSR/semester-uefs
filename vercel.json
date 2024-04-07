@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/tweet/semester-day",
+      "path": "/api/cron/semester-day",
       "schedule": "0 9 * * *"
     }
   ]
