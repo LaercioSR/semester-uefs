@@ -25,6 +25,14 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/calendario",
+        destination: "/calendar",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
