@@ -1,13 +1,18 @@
+import { collection, getDocs } from "firebase/firestore/lite";
 import { Semester, SemesterSchema } from "../schema/semester";
-import { supabase } from "@server/infra/db/supabase";
+import { firebase } from "@server/infra/db/firebase";
 
 async function list(): Promise<Semester[]> {
-  const { data: semesters, error } = await supabase()
-    .from("semesters")
-    .select("*", {
-      count: "exact",
-    });
-  if (error) throw new Error("Failed to fetch data");
+  const query = await getDocs(collection(firebase(), "semesters"));
+  const semesters = query.docs.map((doc) => {
+    const data = doc.data();
+
+    return {
+      title: doc.id,
+      start_date: data.start_at.toDate(),
+      end_date: data.end_at.toDate(),
+    };
+  });
 
   const parsedSemesters = SemesterSchema.array().parse(semesters);
 
