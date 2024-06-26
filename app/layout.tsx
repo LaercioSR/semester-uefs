@@ -1,3 +1,4 @@
+import { LayoutProps } from ".next/types/app/layout";
 import StyledComponentsRegistry from "./lib/registry";
 import { Metadata } from "next";
 
@@ -8,11 +9,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="pt">
       <body suppressHydrationWarning={true}>
