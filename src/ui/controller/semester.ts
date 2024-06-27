@@ -36,8 +36,8 @@ async function getDays(): Promise<SemesterControllerGetDaysOutput> {
 interface SemesterControllerGetEventsOutput {
   events: {
     title: string;
-    start_at: string;
-    end_at: string;
+    start_at: Date;
+    end_at: Date;
     event_groups: { [key: string]: Event[] };
   }[];
 }
