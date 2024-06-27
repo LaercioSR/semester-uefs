@@ -1,7 +1,15 @@
 "use client";
 import { ThemeProvider } from "@contexts/ThemeContext";
 import { GlobalStyle } from "app/styles/global";
-import { Content, Main } from "./style";
+import {
+  Content,
+  DateItem,
+  DateList,
+  Main,
+  SemestersItem,
+  SemestersList,
+  SemestersSection,
+} from "./style";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
 import CustomCalendar from "@components/CustomCalendar";
@@ -17,6 +25,7 @@ interface Semester {
 }
 
 interface SpecialDates {
+  id: string;
   date: Date;
   type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
 }
@@ -40,36 +49,36 @@ export default function Calendar() {
     semesterController.getEvents().then(({ events }) => {
       setSemesters(events);
 
-      setSpecialDates(
-        events.reduce<SpecialDates[]>((acc, semester) => {
-          const semesterSpecialDates = Object.entries(
-            semester.event_groups
-          ).reduce<SpecialDates[]>((acc, [, events]) => {
-            return [
-              ...acc,
-              ...events.reduce<SpecialDates[]>((acc, event) => {
-                if (!event.start_at || !event.end_at) {
-                  return acc;
-                }
-                const type = event.is_important
-                  ? "IMPORTANT"
-                  : event.is_holiday
-                  ? "HOLIDAY"
-                  : "ACADEMIC";
-                const startDate = new Date(event.start_at);
-                const endDate = new Date(event.end_at);
-                const dates = getDates(startDate, endDate);
-                const specialDates = dates.map<SpecialDates>((date) => ({
-                  date,
-                  type,
-                }));
-                return [...acc, ...specialDates];
-              }, []),
-            ];
-          }, []);
-          return [...acc, ...semesterSpecialDates];
-        }, [])
-      );
+      const specialDates = events.reduce<SpecialDates[]>((acc, semester) => {
+        const semesterSpecialDates = Object.entries(
+          semester.event_groups
+        ).reduce<SpecialDates[]>((acc, [, events]) => {
+          return [
+            ...acc,
+            ...events.reduce<SpecialDates[]>((acc, event) => {
+              if (!event.start_at || !event.end_at) {
+                return acc;
+              }
+              const type = event.is_important
+                ? "IMPORTANT"
+                : event.is_holiday
+                ? "HOLIDAY"
+                : "ACADEMIC";
+              const startDate = new Date(event.start_at);
+              const endDate = new Date(event.end_at);
+              const dates = getDates(startDate, endDate);
+              const specialDates = dates.map<SpecialDates>((date) => ({
+                date,
+                type,
+                id: event.title,
+              }));
+              return [...acc, ...specialDates];
+            }, []),
+          ];
+        }, []);
+        return [...acc, ...semesterSpecialDates];
+      }, []);
+      setSpecialDates(specialDates);
     });
   }, []);
 
@@ -79,6 +88,29 @@ export default function Calendar() {
         <Header />
         <Content>
           <CustomCalendar specialDates={specialDates} />
+          <SemestersSection>
+            <SemestersList>
+              {semesters.map((semester) => (
+                <SemestersItem key={semester.title}>
+                  <h2>{semester.title}</h2>
+                  <DateList>
+                    {Object.entries(semester.event_groups).map(
+                      ([group, events]) => (
+                        <DateItem key={group}>
+                          <h3>{group}</h3>
+                          <ul>
+                            {events.map((event) => (
+                              <li key={event.title}>{event.title}</li>
+                            ))}
+                          </ul>
+                        </DateItem>
+                      )
+                    )}
+                  </DateList>
+                </SemestersItem>
+              ))}
+            </SemestersList>
+          </SemestersSection>
         </Content>
         <Footer />
       </Main>

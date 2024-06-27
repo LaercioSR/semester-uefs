@@ -29,13 +29,13 @@ async function postUpdateCalendar(_req: Request) {
     )?.end_at;
     await semesterRepository.createSemester({
       title: calendarData.semester,
-      start_at: new Date(`${start_at} 00:00:00`),
-      end_at: new Date(`${end_at} 23:59:59`),
+      start_at: start_at ?? "",
+      end_at: end_at ?? "",
     });
     calendarData.infos.forEach(async (info) => {
       await semesterRepository.createEventInSemester(calendarData.semester, {
-        start_at: info.start_at ? new Date(`${info.start_at} 00:00:00`) : null,
-        end_at: info.start_at ? new Date(`${info.end_at} 23:59:59`) : null,
+        start_at: info.start_at ? info.start_at : null,
+        end_at: info.start_at ? info.end_at : null,
         title: info.title,
         is_holiday: info.is_holiday,
         is_important: info.is_important,

@@ -11,5 +11,15 @@ export const Content = styled("div")`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100% - 10rem);
+  min-height: calc(100% - 10rem);
 `;
+
+export const SemestersSection = styled("section")``;
+
+export const SemestersList = styled("ul")``;
+
+export const SemestersItem = styled("li")``;
+
+export const DateList = styled("ul")``;
+
+export const DateItem = styled("li")``;

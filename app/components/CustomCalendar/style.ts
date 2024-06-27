@@ -45,8 +45,9 @@ export const HighlightList = styled("ul")`
   display: flex;
   gap: 0.25rem;
   justify-content: center;
+  align-items: center;
   margin-top: 0.25rem;
-  height: 0.35rem;
+  height: 0.4rem;
 `;
 
 interface HighlightItemProps {
@@ -56,8 +57,8 @@ interface HighlightItemProps {
 export const HighlightItem = styled("li")<HighlightItemProps>`
   content: "";
   display: block;
-  width: 0.35rem;
-  height: 0.35rem;
+  width: 0.3rem;
+  height: 0.3rem;
   background: ${(props) => highlightColors[props.type]};
   border-radius: 50%;
 `;

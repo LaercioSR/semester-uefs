@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 export const Content = styled("header")`
@@ -28,6 +29,13 @@ export const LeftSide = styled("div")`
       height: 2.5rem;
     }
   }
+`;
+
+export const LinkHome = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
 `;
 
 export const Title = styled("p")`
