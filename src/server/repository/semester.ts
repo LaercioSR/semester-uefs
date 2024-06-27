@@ -30,6 +30,43 @@ async function list(): Promise<Semester[]> {
   return parsedSemesters;
 }
 
+async function listWithEvents(): Promise<Semester[]> {
+  const query = await getDocs(collection(firebase(), "semesters"));
+  const semesters = await Promise.all(
+    query.docs.map(async (doc) => {
+      const data = doc.data();
+
+      const queryEvents = await getDocs(
+        collection(firebase(), `semesters/${doc.id}/events`)
+      );
+      const events = queryEvents.docs
+        .map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            title: data.title,
+            start_at: data.start_at ? data.start_at.toDate() : null,
+            end_at: data.end_at ? data.end_at.toDate() : null,
+            is_holiday: data.is_holiday,
+            is_important: data.is_important,
+          };
+        })
+        .sort((a, b) => a.start_at?.getTime() - b.start_at?.getTime());
+
+      return {
+        title: doc.id,
+        start_at: data.start_at.toDate(),
+        end_at: data.end_at.toDate(),
+        events,
+      };
+    })
+  );
+
+  const parsedSemesters = SemesterSchema.array().parse(semesters);
+
+  return parsedSemesters;
+}
+
 async function getCurrentSemester(): Promise<Semester> {
   const dateNow = new Date(
     new Date().toLocaleString("en-US", { timeZone: "America/Bahia" })
@@ -157,6 +194,12 @@ async function deleteEventsInSemester(title: string): Promise<void> {
   });
 }
 
+async function getAllEvents(): Promise<Event[]> {
+  const semesters = await listWithEvents();
+  const events = semesters.flatMap((semester) => semester.events ?? []);
+  return events;
+}
+
 export const semesterRepository = {
   list,
   getCurrentSemester,
@@ -168,4 +211,6 @@ export const semesterRepository = {
   createEventInSemester,
   createSemester,
   deleteSemester,
+  listWithEvents,
+  getAllEvents,
 };

@@ -19,6 +19,7 @@ async function updateCalendar(_req: Request) {
       calendarFile.link
     );
 
+    await semesterRepository.deleteEventsInSemester(calendarData.semester);
     await semesterRepository.deleteSemester(calendarData.semester);
     const start_at = calendarData.infos.find((info) =>
       info.title.includes("Início do semestre")

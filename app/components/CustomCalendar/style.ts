@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import ReactCalendar from "react-calendar";
 
+const highlightColors = {
+  HOLIDAY: "deepskyblue",
+  ACADEMIC: "orange",
+  IMPORTANT: "red",
+};
+
 export const Calendar = styled(ReactCalendar)`
   background-color: ${(props) => props.theme.primary};
   border: 1px solid ${(props) => props.theme.secondary};
@@ -44,7 +50,7 @@ export const HighlightList = styled("ul")`
 `;
 
 interface HighlightItemProps {
-  type: "HOLIDAY" | "ACADEMIC";
+  type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
 }
 
 export const HighlightItem = styled("li")<HighlightItemProps>`
@@ -52,6 +58,6 @@ export const HighlightItem = styled("li")<HighlightItemProps>`
   display: block;
   width: 0.35rem;
   height: 0.35rem;
-  background: ${(props) => (props.type === "HOLIDAY" ? "red" : "orange")};
+  background: ${(props) => highlightColors[props.type]};
   border-radius: 50%;
 `;

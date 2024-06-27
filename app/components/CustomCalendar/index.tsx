@@ -3,7 +3,7 @@ import "react-calendar/dist/Calendar.css";
 
 type SpecialDates = {
   date: Date;
-  type: "HOLIDAY" | "ACADEMIC";
+  type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
 };
 
 interface CustomCalendarProps {
@@ -14,7 +14,7 @@ export default function CustomCalendar({ specialDates }: CustomCalendarProps) {
   const specialDatesMap = specialDates.reduce((acc, { date, type }) => {
     acc[date.toDateString()] = type;
     return acc;
-  }, {} as { [key: string]: "HOLIDAY" | "ACADEMIC" });
+  }, {} as { [key: string]: "HOLIDAY" | "ACADEMIC" | "IMPORTANT" });
 
   function setTileContent({ date, view }: { date: Date; view: string }) {
     return (

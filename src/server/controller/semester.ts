@@ -21,7 +21,21 @@ async function getDaysToStartNextSemester(_req: Request) {
   });
 }
 
+async function getSemestersWithEvents(_req: Request) {
+  const semesters = await semesterRepository.listWithEvents();
+  const response = {
+    semesters,
+  };
+  return new Response(JSON.stringify(response), {
+    status: 200,
+    headers: {
+      "Cache-Control": "no-store, must-revalidate",
+    },
+  });
+}
+
 export const semesterController = {
   getDaysToEndCurrentSemester,
   getDaysToStartNextSemester,
+  getSemestersWithEvents,
 };
