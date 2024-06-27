@@ -9,17 +9,47 @@ export const Main = styled("main")`
 export const Content = styled("div")`
   display: flex;
   flex-direction: column;
+  gap: 5rem;
   align-items: center;
   justify-content: center;
   min-height: calc(100% - 10rem);
+  margin-top: 5rem;
 `;
 
-export const SemestersSection = styled("section")``;
+export const SemestersSection = styled("section")`
+  max-width: 50rem;
+  width: 100%;
 
-export const SemestersList = styled("ul")``;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-export const SemestersItem = styled("li")``;
+export const SemestersList = styled("ul")`
+  list-style-type: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+`;
 
-export const DateList = styled("ul")``;
+export const SemestersItem = styled("li")`
+  width: 100%;
+  text-align: center;
+`;
 
-export const DateItem = styled("li")``;
+export const DateList = styled("ul")`
+  list-style-type: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+export const DateItem = styled("li")`
+  width: 100%;
+  text-align: center;
+  border-bottom: 0.075rem solid ${(props) => props.theme.secondary};
+`;

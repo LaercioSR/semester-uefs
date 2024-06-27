@@ -31,9 +31,23 @@ interface SpecialDates {
 }
 
 export default function Calendar() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [semesters, setSemesters] = React.useState<Semester[]>([]);
   const [specialDates, setSpecialDates] = React.useState<SpecialDates[]>([]);
+  const monthList = {
+    "0": "Janeiro",
+    "1": "Fevereiro",
+    "2": "Março",
+    "3": "Abril",
+    "4": "Maio",
+    "5": "Junho",
+    "6": "Julho",
+    "7": "Agosto",
+    "8": "Setembro",
+    "9": "Outubro",
+    "10": "Novembro",
+    "11": "Dezembro",
+    without_date: "Sem data",
+  };
 
   function getDates(startDate: Date, stopDate: Date) {
     const dateArray = [];
@@ -97,12 +111,10 @@ export default function Calendar() {
                     {Object.entries(semester.event_groups).map(
                       ([group, events]) => (
                         <DateItem key={group}>
-                          <h3>{group}</h3>
-                          <ul>
-                            {events.map((event) => (
-                              <li key={event.title}>{event.title}</li>
-                            ))}
-                          </ul>
+                          <h3>{monthList[group as keyof typeof monthList]}</h3>
+                          {events.map((event) => (
+                            <li key={event.title}>{event.title}</li>
+                          ))}
                         </DateItem>
                       )
                     )}
