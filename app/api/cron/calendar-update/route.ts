@@ -1,3 +1,5 @@
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 import { calendarFileController } from "@server/controller/calendarFile";
 
 export async function GET(request: Request) {
@@ -7,5 +9,5 @@ export async function GET(request: Request) {
       status: 401,
     });
   }
-  return await calendarFileController.updateCalendar(request);
+  return await calendarFileController.postUpdateCalendar(request);
 }

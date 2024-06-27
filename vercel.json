@@ -8,5 +8,15 @@
       "path": "/api/cron/semester-day",
       "schedule": "0 9 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/cron/calendar-update": {
+      "memory": 128,
+      "maxDuration": 60
+    },
+    "api/cron/semester-day": {
+      "memory": 128,
+      "maxDuration": 60
+    }
+  }
 }

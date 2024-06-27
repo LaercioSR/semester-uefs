@@ -4,7 +4,7 @@ import { semesterRepository } from "@server/repository/semester";
 import { CalendarFile } from "@server/schema/calendarFile";
 import { difference } from "@server/utils/setOperations";
 
-async function updateCalendar(_req: Request) {
+async function postUpdateCalendar(_req: Request) {
   const calendarsSaved = await calendarFileRepository.list();
   const calendarsSite = await calendarFileRepository.listFilesInSite();
 
@@ -48,5 +48,5 @@ async function updateCalendar(_req: Request) {
 }
 
 export const calendarFileController = {
-  updateCalendar,
+  postUpdateCalendar,
 };
