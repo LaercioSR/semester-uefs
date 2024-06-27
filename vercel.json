@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/cron/calendar-update",
+      "schedule": "0 4 * * *"
+    },
+    {
       "path": "/api/cron/semester-day",
       "schedule": "0 9 * * *"
     }

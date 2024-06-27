@@ -25,6 +25,17 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/calendario",
+        destination: "/calendar",
+      },
+    ];
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["pdf-parse"],
+  },
 };
 
 export default nextConfig;

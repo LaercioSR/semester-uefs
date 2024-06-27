@@ -2,8 +2,8 @@ import { z as schema } from "zod";
 import { EventSchema } from "./event";
 export const SemesterSchema = schema.object({
   title: schema.string(),
-  start_at: schema.date(),
-  end_at: schema.date(),
+  start_at: schema.string().datetime(),
+  end_at: schema.string().datetime(),
   events: schema.array(EventSchema).optional(),
 });
 
