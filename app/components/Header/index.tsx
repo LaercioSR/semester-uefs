@@ -6,6 +6,7 @@ import {
   SocialMediaLink,
   Title,
   VerticalLine,
+  LinkHome,
 } from "./style";
 import Image from "next/image";
 import DarkModeIcon from "@assets/icons/dark-mode.svg";
@@ -24,13 +25,15 @@ export default function Header() {
   return (
     <Content>
       <LeftSide>
-        <Image
-          src="/logo.svg"
-          alt="Semestre UEFS Logo"
-          width={48}
-          height={80}
-        />
-        <Title>Semestre UEFS</Title>
+        <LinkHome href="/">
+          <Image
+            src="/logo.svg"
+            alt="Semestre UEFS Logo"
+            width={48}
+            height={80}
+          />
+          <Title>Semestre UEFS</Title>
+        </LinkHome>
       </LeftSide>
       <RightSide>
         <SocialMediaLink href="https://x.com/uefssemestre" target="_blank">

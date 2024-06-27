@@ -19,8 +19,8 @@ async function list(): Promise<Semester[]> {
 
       return {
         title: doc.id,
-        start_at: data.start_at.toDate(),
-        end_at: data.end_at.toDate(),
+        start_at: data.start_at,
+        end_at: data.end_at,
       };
     })
   );
@@ -45,18 +45,26 @@ async function listWithEvents(): Promise<Semester[]> {
           return {
             id: doc.id,
             title: data.title,
-            start_at: data.start_at ? data.start_at.toDate() : null,
-            end_at: data.end_at ? data.end_at.toDate() : null,
+            start_at: data.start_at ? data.start_at : null,
+            end_at: data.end_at ? data.end_at : null,
             is_holiday: data.is_holiday,
             is_important: data.is_important,
           };
         })
-        .sort((a, b) => a.start_at?.getTime() - b.start_at?.getTime());
+        .sort((a, b) => {
+          const startAtA = a.start_at
+            ? new Date(a.start_at).getTime()
+            : Infinity;
+          const startAtB = b.start_at
+            ? new Date(b.start_at).getTime()
+            : Infinity;
+          return startAtA - startAtB;
+        });
 
       return {
         title: doc.id,
-        start_at: data.start_at.toDate(),
-        end_at: data.end_at.toDate(),
+        start_at: data.start_at,
+        end_at: data.end_at,
         events,
       };
     })
@@ -74,7 +82,9 @@ async function getCurrentSemester(): Promise<Semester> {
   const semesters = await list();
 
   const semester = semesters.find((semester) => {
-    return semester.start_at <= dateNow && semester.end_at >= dateNow;
+    const startAt = new Date(`${semester.start_at} 00:00:00`);
+    const endAt = new Date(`${semester.end_at} 23:59:59`);
+    return startAt <= dateNow && endAt >= dateNow;
   });
 
   if (!semester) {
@@ -94,7 +104,8 @@ async function getDaysToEndCurrentSemester(): Promise<GetDaysToEndCurrentRespons
     new Date().toLocaleString("en-US", { timeZone: "America/Bahia" })
   );
   const currentSemester = await getCurrentSemester();
-  const timeToEnd = currentSemester.end_at.getTime() - today.getTime();
+  const endAt = new Date(`${currentSemester.end_at} 23:59:59`);
+  const timeToEnd = endAt.getTime() - today.getTime();
   const daysToEnd = Math.floor(timeToEnd / (1000 * 60 * 60 * 24));
   return {
     days: daysToEnd,
@@ -110,7 +121,8 @@ async function getNextSemester(): Promise<Semester> {
   const semesters = await list();
 
   const semester = semesters.find((semester) => {
-    return semester.start_at > dateNow;
+    const startAt = new Date(`${semester.start_at} 00:00:00`);
+    return startAt > dateNow;
   });
 
   if (!semester) {
@@ -130,7 +142,8 @@ async function getDaysToStartNextSemester(): Promise<GetDaysToStartNextResponse>
     new Date().toLocaleString("en-US", { timeZone: "America/Bahia" })
   );
   const nextSemester = await getNextSemester();
-  const timeToStart = nextSemester.start_at.getTime() - today.getTime();
+  const startAt = new Date(`${nextSemester.start_at} 00:00:00`);
+  const timeToStart = startAt.getTime() - today.getTime();
   const daysToStart = Math.round(timeToStart / (1000 * 60 * 60 * 24));
 
   return {
@@ -154,8 +167,8 @@ async function getSemesterByTitle(title: string): Promise<Semester> {
 
   const semester = {
     title,
-    start_at: data.start_at.toDate(),
-    end_at: data.end_at.toDate(),
+    start_at: data.start_at,
+    end_at: data.end_at,
     events: events,
   };
 
@@ -185,13 +198,17 @@ async function createEventInSemester(
 }
 
 async function deleteEventsInSemester(title: string): Promise<void> {
-  const semester = await getSemesterByTitle(title);
-  const events = semester.events || [];
+  try {
+    const semester = await getSemesterByTitle(title);
+    const events = semester.events || [];
 
-  events.forEach(async (event) => {
-    if (event.id)
-      await deleteDoc(doc(firebase(), `semesters/${title}/events`, event.id));
-  });
+    events.forEach(async (event) => {
+      if (event.id)
+        await deleteDoc(doc(firebase(), `semesters/${title}/events`, event.id));
+    });
+  } catch (error) {
+    return;
+  }
 }
 
 async function getAllEvents(): Promise<Event[]> {

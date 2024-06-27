@@ -1,3 +1,5 @@
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 import { tweetController } from "@server/controller/tweet";
 
 export async function GET(request: Request) {

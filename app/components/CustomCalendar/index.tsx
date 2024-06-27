@@ -2,6 +2,7 @@ import { Calendar, HighlightItem, HighlightList } from "./style";
 import "react-calendar/dist/Calendar.css";
 
 type SpecialDates = {
+  id: string;
   date: Date;
   type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
 };
@@ -11,17 +12,24 @@ interface CustomCalendarProps {
 }
 
 export default function CustomCalendar({ specialDates }: CustomCalendarProps) {
-  const specialDatesMap = specialDates.reduce((acc, { date, type }) => {
-    acc[date.toDateString()] = type;
+  const specialDatesMap = specialDates.reduce((acc, { date, type, id }) => {
+    if (!acc[date.toDateString()]) {
+      acc[date.toDateString()] = [];
+    }
+    acc[date.toDateString()].push({ type, id });
     return acc;
-  }, {} as { [key: string]: "HOLIDAY" | "ACADEMIC" | "IMPORTANT" });
+  }, {} as { [key: string]: { type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT"; id: string }[] });
 
   function setTileContent({ date, view }: { date: Date; view: string }) {
     return (
       view === "month" && (
         <HighlightList>
           {specialDatesMap[date.toDateString()] && (
-            <HighlightItem type={specialDatesMap[date.toDateString()]} />
+            <>
+              {specialDatesMap[date.toDateString()].map((specialDate) => (
+                <HighlightItem type={specialDate.type} key={specialDate.id} />
+              ))}
+            </>
           )}
         </HighlightList>
       )
