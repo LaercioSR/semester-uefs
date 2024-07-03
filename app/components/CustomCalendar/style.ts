@@ -3,7 +3,7 @@ import ReactCalendar from "react-calendar";
 
 const highlightColors = {
   HOLIDAY: "deepskyblue",
-  ACADEMIC: "orange",
+  ACADEMIC: "gray",
   IMPORTANT: "red",
 };
 
@@ -27,16 +27,11 @@ export const Calendar = styled(ReactCalendar)`
 
   .react-calendar__tile--now {
     background: none;
+    background: ${(props) => props.theme.secondary};
 
     abbr {
       color: ${(props) => props.theme.primary};
-      background: ${(props) => props.theme.secondary};
-      padding: 0.25rem 0.25rem;
-      border-radius: 50%;
-    }
-
-    & :enabled:hover {
-      background: none;
+      font-weight: bold;
     }
   }
 `;

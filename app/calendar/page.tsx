@@ -3,11 +3,10 @@ import { ThemeProvider } from "@contexts/ThemeContext";
 import { GlobalStyle } from "app/styles/global";
 import {
   Content,
-  DateItem,
-  DateList,
   Main,
-  SemestersItem,
-  SemestersList,
+  MonthItem,
+  MonthList,
+  MonthTitle,
   SemestersSection,
 } from "./style";
 import Header from "@components/Header";
@@ -16,6 +15,8 @@ import CustomCalendar from "@components/CustomCalendar";
 import { semesterController } from "@ui/controller/semester";
 import React, { useEffect } from "react";
 import { Event } from "@ui/schema/event";
+import Accordion from "@components/Accordion";
+import Table from "@components/Table";
 
 interface Semester {
   title: string;
@@ -48,6 +49,7 @@ export default function Calendar() {
     "11": "Dezembro",
     without_date: "Sem data",
   };
+  const headers = [{ title: "Data" }, { title: "Evento", width: "100%" }];
 
   function getDates(startDate: Date, stopDate: Date) {
     const dateArray = [];
@@ -57,6 +59,13 @@ export default function Calendar() {
       currentDate.setDate(currentDate.getDate() + 1);
     }
     return dateArray;
+  }
+
+  // Function to format date to string, with the format "dd/MM"
+  function formatDate(date: Date) {
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    return `${day}/${month}`;
   }
 
   useEffect(() => {
@@ -103,25 +112,36 @@ export default function Calendar() {
         <Content>
           <CustomCalendar specialDates={specialDates} />
           <SemestersSection>
-            <SemestersList>
-              {semesters.map((semester) => (
-                <SemestersItem key={semester.title}>
-                  <h2>{semester.title}</h2>
-                  <DateList>
-                    {Object.entries(semester.event_groups).map(
-                      ([group, events]) => (
-                        <DateItem key={group}>
-                          <h3>{monthList[group as keyof typeof monthList]}</h3>
-                          {events.map((event) => (
-                            <li key={event.title}>{event.title}</li>
-                          ))}
-                        </DateItem>
-                      )
-                    )}
-                  </DateList>
-                </SemestersItem>
-              ))}
-            </SemestersList>
+            {semesters.map((semester) => (
+              <Accordion key={semester.title} title={semester.title}>
+                <MonthList>
+                  {Object.entries(semester.event_groups).map(
+                    ([group, events]) => (
+                      <MonthItem key={group}>
+                        <MonthTitle>
+                          {monthList[group as keyof typeof monthList]}
+                        </MonthTitle>
+                        <Table
+                          headers={headers}
+                          rows={events.map((event) => {
+                            let date = event.start_at
+                              ? `${formatDate(event.start_at)}`
+                              : "Sem data";
+                            if (
+                              event.end_at &&
+                              event.start_at !== event.end_at
+                            ) {
+                              date += ` - ${formatDate(event.end_at)}`;
+                            }
+                            return [date, event.title];
+                          })}
+                        />
+                      </MonthItem>
+                    )
+                  )}
+                </MonthList>
+              </Accordion>
+            ))}
           </SemestersSection>
         </Content>
         <Footer />
