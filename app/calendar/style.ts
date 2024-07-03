@@ -11,9 +11,8 @@ export const Content = styled("div")`
   flex-direction: column;
   gap: 5rem;
   align-items: center;
-  justify-content: center;
   min-height: calc(100% - 10rem);
-  margin-top: 5rem;
+  padding: 5rem 0;
 `;
 
 export const SemestersSection = styled("section")`
@@ -25,31 +24,26 @@ export const SemestersSection = styled("section")`
   align-items: center;
 `;
 
-export const SemestersList = styled("ul")`
+export const MonthList = styled("ul")`
   list-style-type: none;
   width: 100%;
+`;
+
+export const MonthItem = styled("li")`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+  gap: 0.25rem;
+  justify-content: center;
 `;
 
-export const SemestersItem = styled("li")`
-  width: 100%;
+export const MonthTitle = styled("h3")`
   text-align: center;
+  margin-top: 1rem;
 `;
 
-export const DateList = styled("ul")`
-  list-style-type: none;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const DateItem = styled("li")`
-  width: 100%;
+export const LoadingMessage = styled("p")`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${(props) => props.theme.secondary};
   text-align: center;
-  border-bottom: 0.075rem solid ${(props) => props.theme.secondary};
 `;
