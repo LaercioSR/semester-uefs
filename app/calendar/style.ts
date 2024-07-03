@@ -40,3 +40,10 @@ export const MonthTitle = styled("h3")`
   text-align: center;
   margin-top: 1rem;
 `;
+
+export const LoadingMessage = styled("p")`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${(props) => props.theme.secondary};
+  text-align: center;
+`;

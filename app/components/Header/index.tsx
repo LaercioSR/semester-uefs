@@ -7,19 +7,34 @@ import {
   Title,
   VerticalLine,
   LinkHome,
+  Menu,
+  Overlay,
+  MenuHeader,
+  MenuList,
+  MenuItem,
+  MenuLink,
 } from "./style";
 import Image from "next/image";
+import CloseIcon from "@assets/icons/close.svg";
 import DarkModeIcon from "@assets/icons/dark-mode.svg";
 import LightModeIcon from "@assets/icons/light-mode.svg";
+import MenuIcon from "@assets/icons/menu.svg";
 import XIcon from "@assets/icons/x.svg";
 import { useTheme } from "@hooks/useTheme";
+import React from "react";
 
 export default function Header() {
   const { isDarkMode, toggleTheme } = useTheme();
+  const [isOpenMenu, setIsOpenMenu] = React.useState(false);
 
   function handleToggleTheme(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     toggleTheme();
+  }
+
+  function handleToggleMenu(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    setIsOpenMenu(!isOpenMenu);
   }
 
   return (
@@ -43,7 +58,26 @@ export default function Header() {
         <HeaderButton onClick={handleToggleTheme}>
           {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
         </HeaderButton>
+        <HeaderButton onClick={handleToggleMenu}>
+          <MenuIcon />
+        </HeaderButton>
       </RightSide>
+      <Overlay isOpen={isOpenMenu} />
+      <Menu isOpen={isOpenMenu}>
+        <MenuHeader>
+          <HeaderButton onClick={handleToggleMenu}>
+            <CloseIcon />
+          </HeaderButton>
+        </MenuHeader>
+        <MenuList>
+          <MenuItem>
+            <MenuLink href="/">Início</MenuLink>
+          </MenuItem>
+          <MenuItem>
+            <MenuLink href="/calendario">Calendário</MenuLink>
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </Content>
   );
 }

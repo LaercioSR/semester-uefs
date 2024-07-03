@@ -122,3 +122,69 @@ export const VerticalLine = styled("span")`
     height: 1.75rem;
   }
 `;
+
+interface MenuProps {
+  isOpen: boolean;
+}
+
+export const Menu = styled("nav")<MenuProps>`
+  display: ${(props) => (props.isOpen ? "flex" : "none")};
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20rem;
+  padding: 0;
+  background-color: ${(props) => props.theme.primary};
+  flex-direction: column;
+  z-index: 10;
+`;
+
+export const MenuHeader = styled("div")`
+  display: flex;
+  justify-content: flex-end;
+  height: 5rem;
+  padding: 1rem 2rem;
+`;
+
+export const MenuList = styled("ul")`
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  list-style: none;
+  width: 100%;
+`;
+
+export const MenuItem = styled("li")`
+  width: 100%;
+  transition: background-color 0.3s;
+  padding: 0.5rem 2rem;
+  text-align: right;
+
+  &:hover {
+    background-color: ${(props) => props.theme.secondary}1A;
+  }
+`;
+
+export const MenuLink = styled(Link)`
+  font-weight: bold;
+  font-size: 1.25rem;
+  text-align: right;
+  text-transform: uppercase;
+  width: 100%;
+`;
+
+interface OverlayProps {
+  isOpen: boolean;
+}
+
+export const Overlay = styled("div")<OverlayProps>`
+  display: ${(props) => (props.isOpen ? "block" : "none")};
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000000b3;
+  z-index: 9;
+`;

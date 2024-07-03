@@ -3,6 +3,7 @@ import { ThemeProvider } from "@contexts/ThemeContext";
 import { GlobalStyle } from "app/styles/global";
 import {
   Content,
+  LoadingMessage,
   Main,
   MonthItem,
   MonthList,
@@ -111,38 +112,42 @@ export default function Calendar() {
         <Header />
         <Content>
           <CustomCalendar specialDates={specialDates} />
-          <SemestersSection>
-            {semesters.map((semester) => (
-              <Accordion key={semester.title} title={semester.title}>
-                <MonthList>
-                  {Object.entries(semester.event_groups).map(
-                    ([group, events]) => (
-                      <MonthItem key={group}>
-                        <MonthTitle>
-                          {monthList[group as keyof typeof monthList]}
-                        </MonthTitle>
-                        <Table
-                          headers={headers}
-                          rows={events.map((event) => {
-                            let date = event.start_at
-                              ? `${formatDate(event.start_at)}`
-                              : "Sem data";
-                            if (
-                              event.end_at &&
-                              event.start_at !== event.end_at
-                            ) {
-                              date += ` - ${formatDate(event.end_at)}`;
-                            }
-                            return [date, event.title];
-                          })}
-                        />
-                      </MonthItem>
-                    )
-                  )}
-                </MonthList>
-              </Accordion>
-            ))}
-          </SemestersSection>
+          {semesters.length > 0 ? (
+            <SemestersSection>
+              {semesters.map((semester) => (
+                <Accordion key={semester.title} title={semester.title}>
+                  <MonthList>
+                    {Object.entries(semester.event_groups).map(
+                      ([group, events]) => (
+                        <MonthItem key={group}>
+                          <MonthTitle>
+                            {monthList[group as keyof typeof monthList]}
+                          </MonthTitle>
+                          <Table
+                            headers={headers}
+                            rows={events.map((event) => {
+                              let date = event.start_at
+                                ? `${formatDate(event.start_at)}`
+                                : "Sem data";
+                              if (
+                                event.end_at &&
+                                event.start_at !== event.end_at
+                              ) {
+                                date += ` - ${formatDate(event.end_at)}`;
+                              }
+                              return [date, event.title];
+                            })}
+                          />
+                        </MonthItem>
+                      )
+                    )}
+                  </MonthList>
+                </Accordion>
+              ))}
+            </SemestersSection>
+          ) : (
+            <LoadingMessage>Carregando Calendário...</LoadingMessage>
+          )}
         </Content>
         <Footer />
       </Main>
