@@ -16,9 +16,15 @@ type SpecialDates = {
 
 interface CustomCalendarProps {
   specialDates: SpecialDates[];
+  minDate?: Date;
+  maxDate?: Date;
 }
 
-export default function CustomCalendar({ specialDates }: CustomCalendarProps) {
+export default function CustomCalendar({
+  specialDates,
+  minDate,
+  maxDate,
+}: CustomCalendarProps) {
   const specialDatesMap = specialDates.reduce((acc, { date, type, id }) => {
     if (!acc[date.toDateString()]) {
       acc[date.toDateString()] = [];
@@ -52,6 +58,10 @@ export default function CustomCalendar({ specialDates }: CustomCalendarProps) {
         onClickDay={() => {
           return;
         }}
+        minDate={minDate}
+        maxDate={maxDate}
+        prev2Label={null}
+        next2Label={null}
       />
       <LegendList>
         <LegendItem type="HOLIDAY">Feriado ou recesso</LegendItem>

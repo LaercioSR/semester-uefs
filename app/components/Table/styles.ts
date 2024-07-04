@@ -19,7 +19,7 @@ interface TableHeaderCellProps {
 }
 
 export const TableHeaderCell = styled("th")<TableHeaderCellProps>`
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   min-width: ${(props) => props.width ?? "7.5rem"};
   border-bottom: 0.025rem solid ${(props) => props.theme.secondary};
 `;
@@ -30,13 +30,13 @@ export const TableBody = styled("tbody")`
 
 interface TableBodyCellProps {
   width?: string;
-  align?: string;
+  $align?: string;
 }
 
 export const TableBodyCell = styled("td")<TableBodyCellProps>`
   width: ${(props) => props.width ?? "auto"};
-  padding: 1rem 0.5rem;
-  align-self: ${(props) => props.align ?? "auto"};
+  padding: 0.5rem;
+  text-align: ${(props) => props.$align ?? "auto"};
   border-bottom: 0.025rem solid ${(props) => props.theme.secondary};
 
   li {

@@ -14,7 +14,7 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import CustomCalendar from "@components/CustomCalendar";
 import { semesterController } from "@ui/controller/semester";
-import React, { useEffect } from "react";
+import React from "react";
 import { Event } from "@ui/schema/event";
 import Accordion from "@components/Accordion";
 import Table from "@components/Table";
@@ -50,7 +50,8 @@ export default function Calendar() {
     "11": "Dezembro",
     without_date: "Sem data",
   };
-  const headers = [{ title: "Data" }, { title: "Evento", width: "100%" }];
+  const tableHeaders = [{ title: "Data" }, { title: "Evento", width: "100%" }];
+  const tableAligns = ["center", "left"];
 
   function getDates(startDate: Date, stopDate: Date) {
     const dateArray = [];
@@ -69,7 +70,7 @@ export default function Calendar() {
     return `${day}/${month}`;
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     semesterController.getEvents().then(({ events }) => {
       setSemesters(events);
 
@@ -106,12 +107,34 @@ export default function Calendar() {
     });
   }, []);
 
+  const minDate = React.useMemo(() => {
+    return semesters[0]?.event_groups[0][0].start_at;
+  }, [semesters]);
+
+  const maxDate = React.useMemo(() => {
+    if (semesters.length === 0) return;
+    const lastSemester = semesters[semesters.length - 1];
+    const lastMonth = Object.keys(lastSemester.event_groups)
+      .filter((month) => month !== "without_date")
+      .pop();
+    if (!lastMonth) return;
+    const lastEvent =
+      lastSemester.event_groups[lastMonth][
+        lastSemester.event_groups[lastMonth].length - 1
+      ];
+    return lastEvent.end_at;
+  }, [semesters]);
+
   return (
     <ThemeProvider>
       <Main>
         <Header />
         <Content>
-          <CustomCalendar specialDates={specialDates} />
+          <CustomCalendar
+            specialDates={specialDates}
+            minDate={minDate ?? undefined}
+            maxDate={maxDate ?? undefined}
+          />
           {semesters.length > 0 ? (
             <SemestersSection>
               {semesters.map((semester) => (
@@ -124,19 +147,18 @@ export default function Calendar() {
                             {monthList[group as keyof typeof monthList]}
                           </MonthTitle>
                           <Table
-                            headers={headers}
+                            headers={tableHeaders}
                             rows={events.map((event) => {
                               let date = event.start_at
                                 ? `${formatDate(event.start_at)}`
                                 : "Sem data";
-                              if (
-                                event.end_at &&
-                                event.start_at !== event.end_at
-                              ) {
-                                date += ` - ${formatDate(event.end_at)}`;
+                              if (event.end_at) {
+                                const endDate = formatDate(event.end_at);
+                                if (endDate !== date) date += ` - ${endDate}`;
                               }
                               return [date, event.title];
                             })}
+                            aligns={tableAligns}
                           />
                         </MonthItem>
                       )

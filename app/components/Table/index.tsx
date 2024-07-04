@@ -7,12 +7,18 @@ import {
   TableRow,
 } from "./styles";
 
+type Header = {
+  title: string;
+  width?: string;
+};
+
 interface TableProps {
-  headers: { title: string; width?: string }[];
+  headers: Header[];
   rows: string[][];
+  aligns?: string[];
 }
 
-export default function Table({ headers, rows }: TableProps) {
+export default function Table({ headers, rows, aligns }: TableProps) {
   return (
     <Container>
       <TableHeader>
@@ -28,7 +34,9 @@ export default function Table({ headers, rows }: TableProps) {
         {rows.map((row, index) => (
           <TableRow key={index}>
             {row.map((cell, index) => (
-              <TableBodyCell key={index}>{cell}</TableBodyCell>
+              <TableBodyCell key={index} $align={aligns?.at(index)}>
+                {cell}
+              </TableBodyCell>
             ))}
           </TableRow>
         ))}
