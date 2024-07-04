@@ -21,7 +21,7 @@ export default function Accordion({ title, children }: AccordionProps) {
         <Title>{title}</Title>
         {isOpen ? <ExpandLess /> : <ExpandMore />}
       </Header>
-      <Content isOpen={isOpen}>{children}</Content>
+      <Content $isOpen={isOpen}>{children}</Content>
     </Container>
   );
 }

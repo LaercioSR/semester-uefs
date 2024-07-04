@@ -15,22 +15,22 @@ export const Header = styled("div")`
   transition: background-color 0.2s ease-in-out;
 
   svg {
-    fill: ${(props) => props.theme.text};
+    fill: ${(props) => props.theme.secondary};
   }
 
   &:hover {
-    background-color: ${(props) => props.theme.secondary}1A;
+    background-color: ${(props) => props.theme.secondary}33;
   }
 `;
 
 export const Title = styled("h2")``;
 
 interface ContentProps {
-  isOpen: boolean;
+  $isOpen: boolean;
 }
 
 export const Content = styled("div")<ContentProps>`
   padding: 1rem 3rem;
   border-top: 0.025rem solid ${(props) => props.theme.secondary};
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
 `;
