@@ -8,7 +8,6 @@ import {
   VerticalLine,
   LinkHome,
   Menu,
-  Overlay,
   MenuHeader,
   MenuList,
   MenuItem,
@@ -22,6 +21,7 @@ import MenuIcon from "@assets/icons/menu.svg";
 import XIcon from "@assets/icons/x.svg";
 import { useTheme } from "@hooks/useTheme";
 import React from "react";
+import Overlay from "@components/Overlay";
 
 export default function Header() {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -32,7 +32,9 @@ export default function Header() {
     toggleTheme();
   }
 
-  function handleToggleMenu(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleToggleMenu(
+    event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+  ) {
     event.preventDefault();
     setIsOpenMenu(!isOpenMenu);
   }
@@ -62,22 +64,26 @@ export default function Header() {
           <MenuIcon />
         </HeaderButton>
       </RightSide>
-      <Overlay isOpen={isOpenMenu} />
-      <Menu isOpen={isOpenMenu}>
-        <MenuHeader>
-          <HeaderButton onClick={handleToggleMenu}>
-            <CloseIcon />
-          </HeaderButton>
-        </MenuHeader>
-        <MenuList>
-          <MenuItem>
-            <MenuLink href="/">Início</MenuLink>
-          </MenuItem>
-          <MenuItem>
-            <MenuLink href="/calendario">Calendário</MenuLink>
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      {isOpenMenu && (
+        <>
+          <Overlay onClick={handleToggleMenu} />
+          <Menu isOpen={isOpenMenu}>
+            <MenuHeader>
+              <HeaderButton onClick={handleToggleMenu}>
+                <CloseIcon />
+              </HeaderButton>
+            </MenuHeader>
+            <MenuList>
+              <MenuItem>
+                <MenuLink href="/">Início</MenuLink>
+              </MenuItem>
+              <MenuItem>
+                <MenuLink href="/calendario">Calendário</MenuLink>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </>
+      )}
     </Content>
   );
 }

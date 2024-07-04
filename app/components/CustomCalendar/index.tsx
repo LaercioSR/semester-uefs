@@ -1,4 +1,11 @@
-import { Calendar, HighlightItem, HighlightList } from "./style";
+import {
+  Calendar,
+  Container,
+  HighlightItem,
+  HighlightList,
+  LegendItem,
+  LegendList,
+} from "./style";
 import "react-calendar/dist/Calendar.css";
 
 type SpecialDates = {
@@ -37,13 +44,20 @@ export default function CustomCalendar({ specialDates }: CustomCalendarProps) {
   }
 
   return (
-    <Calendar
-      locale="pt-BR"
-      minDetail="year"
-      tileContent={setTileContent}
-      onClickDay={() => {
-        return;
-      }}
-    />
+    <Container>
+      <Calendar
+        locale="pt-BR"
+        minDetail="year"
+        tileContent={setTileContent}
+        onClickDay={() => {
+          return;
+        }}
+      />
+      <LegendList>
+        <LegendItem type="HOLIDAY">Feriado ou recesso</LegendItem>
+        <LegendItem type="IMPORTANT">Data importante</LegendItem>
+        <LegendItem type="ACADEMIC">Data acadêmica</LegendItem>
+      </LegendList>
+    </Container>
   );
 }

@@ -7,6 +7,13 @@ const highlightColors = {
   IMPORTANT: "red",
 };
 
+export const Container = styled("div")`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+`;
+
 export const Calendar = styled(ReactCalendar)`
   background-color: ${(props) => props.theme.primary};
   border: 1px solid ${(props) => props.theme.secondary};
@@ -46,7 +53,7 @@ export const HighlightList = styled("ul")`
 `;
 
 interface HighlightItemProps {
-  type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
+  type: keyof typeof highlightColors;
 }
 
 export const HighlightItem = styled("li")<HighlightItemProps>`
@@ -56,4 +63,32 @@ export const HighlightItem = styled("li")<HighlightItemProps>`
   height: 0.3rem;
   background: ${(props) => highlightColors[props.type]};
   border-radius: 50%;
+`;
+
+export const LegendList = styled("ul")`
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+`;
+
+interface LegendItemProps {
+  type: keyof typeof highlightColors;
+}
+
+export const LegendItem = styled("li")<LegendItemProps>`
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+
+  font-size: 0.75rem;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 0.35rem;
+    height: 0.35rem;
+    background: ${(props) => highlightColors[props.type]};
+    border-radius: 50%;
+  }
 `;
