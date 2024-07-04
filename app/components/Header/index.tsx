@@ -67,7 +67,7 @@ export default function Header() {
       {isOpenMenu && (
         <>
           <Overlay onClick={handleToggleMenu} />
-          <Menu isOpen={isOpenMenu}>
+          <Menu>
             <MenuHeader>
               <HeaderButton onClick={handleToggleMenu}>
                 <CloseIcon />

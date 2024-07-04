@@ -123,12 +123,7 @@ export const VerticalLine = styled("span")`
   }
 `;
 
-interface MenuProps {
-  isOpen: boolean;
-}
-
-export const Menu = styled("nav")<MenuProps>`
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
+export const Menu = styled("nav")`
   position: fixed;
   top: 0;
   right: 0;
