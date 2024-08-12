@@ -33,41 +33,51 @@ async function list(): Promise<Semester[]> {
 async function listWithEvents(): Promise<Semester[]> {
   const query = await getDocs(collection(firebase(), "semesters"));
   const semesters = await Promise.all(
-    query.docs.map(async (doc) => {
-      const data = doc.data();
+    query.docs
+      .filter((doc) => {
+        const data = doc.data();
+        const lastDay = new Date(data.last_day);
 
-      const queryEvents = await getDocs(
-        collection(firebase(), `semesters/${doc.id}/events`)
-      );
-      const events = queryEvents.docs
-        .map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            title: data.title,
-            start_at: data.start_at ? data.start_at : null,
-            end_at: data.end_at ? data.end_at : null,
-            is_holiday: data.is_holiday,
-            is_important: data.is_important,
-          };
-        })
-        .sort((a, b) => {
-          const startAtA = a.start_at
-            ? new Date(a.start_at).getTime()
-            : Infinity;
-          const startAtB = b.start_at
-            ? new Date(b.start_at).getTime()
-            : Infinity;
-          return startAtA - startAtB;
-        });
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
 
-      return {
-        title: doc.id,
-        start_at: data.start_at,
-        end_at: data.end_at,
-        events,
-      };
-    })
+        return lastDay >= tomorrow;
+      })
+      .map(async (doc) => {
+        const data = doc.data();
+
+        const queryEvents = await getDocs(
+          collection(firebase(), `semesters/${doc.id}/events`)
+        );
+        const events = queryEvents.docs
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              title: data.title,
+              start_at: data.start_at ? data.start_at : null,
+              end_at: data.end_at ? data.end_at : null,
+              is_holiday: data.is_holiday,
+              is_important: data.is_important,
+            };
+          })
+          .sort((a, b) => {
+            const startAtA = a.start_at
+              ? new Date(a.start_at).getTime()
+              : Infinity;
+            const startAtB = b.start_at
+              ? new Date(b.start_at).getTime()
+              : Infinity;
+            return startAtA - startAtB;
+          });
+
+        return {
+          title: doc.id,
+          start_at: data.start_at,
+          end_at: data.end_at,
+          events,
+        };
+      })
   );
 
   const parsedSemesters = SemesterSchema.array().parse(semesters);

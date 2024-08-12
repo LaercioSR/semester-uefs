@@ -108,6 +108,7 @@ export default function Calendar() {
   }, []);
 
   const minDate = React.useMemo(() => {
+    if (!semesters[0]?.event_groups[0]) return;
     return semesters[0]?.event_groups[0][0].start_at;
   }, [semesters]);
 
