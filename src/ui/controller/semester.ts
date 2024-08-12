@@ -2,11 +2,12 @@ import { semesterRepository } from "@ui/repository/semester";
 import { Event } from "@ui/schema/event";
 
 function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
+  const secondMessage = event === "início" ? "começa o" : "acaba o";
   if (days === 0) {
-    return ["hoje", "acaba o"];
+    return ["hoje", secondMessage];
   }
   if (days === 1) {
-    return ["amanhã", "acaba o"];
+    return ["amanhã", secondMessage];
   }
   return [`${days} dias`, `para o ${event} do`];
 }
