@@ -8,8 +8,12 @@ async function postUpdateCalendar(_req: Request) {
   const calendarsSaved = await calendarFileRepository.list();
   const calendarsSite = await calendarFileRepository.listFilesInSite();
 
+  const calendarsFilter = calendarsSite.filter(
+    ({ title }) => !title.includes("Extraordinário")
+  );
+
   const calendarsUnsaved = difference<CalendarFile>(
-    calendarsSite,
+    calendarsFilter,
     calendarsSaved,
     "title"
   );

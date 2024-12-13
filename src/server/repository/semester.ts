@@ -36,7 +36,7 @@ async function listWithEvents(): Promise<Semester[]> {
     query.docs
       .filter((doc) => {
         const data = doc.data();
-        const lastDay = new Date(data.last_day);
+        const lastDay = new Date(data.end_at);
 
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
