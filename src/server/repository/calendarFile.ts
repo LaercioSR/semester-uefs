@@ -57,7 +57,15 @@ async function saveFile(calendarFile: CalendarFile): Promise<void> {
 }
 
 async function getCalendarDataByURL(url: string) {
-  const response = await axios.get(url, { responseType: "arraybuffer" });
+  let urlTransformed = url;
+  if (url.includes("drive.google.com")) {
+    const idDrive = /.\/d\/(?<id>.+)\/view/gm.exec(url)?.groups?.id;
+    if (idDrive)
+      urlTransformed = `https://drive.usercontent.google.com/download?id=${idDrive}`;
+  }
+  const response = await axios.get(urlTransformed, {
+    responseType: "arraybuffer",
+  });
   const contentBuffer = Buffer.from(response.data, "binary");
   const data = await PdfParse(contentBuffer);
   const text = data.text;
