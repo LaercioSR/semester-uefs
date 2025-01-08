@@ -8,11 +8,17 @@ import {
 } from "./style";
 import "react-calendar/dist/Calendar.css";
 
+type TypeDate = "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
+
 type SpecialDates = {
   id: string;
   date: Date;
-  type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
+  type: TypeDate;
 };
+
+interface MarkersSpecialDate {
+  [key: string]: { [K in TypeDate]: string[] };
+}
 
 interface CustomCalendarProps {
   specialDates: SpecialDates[];
@@ -25,23 +31,33 @@ export default function CustomCalendar({
   minDate,
   maxDate,
 }: CustomCalendarProps) {
-  const specialDatesMap = specialDates.reduce((acc, { date, type, id }) => {
-    if (!acc[date.toDateString()]) {
-      acc[date.toDateString()] = [];
+  const markers = specialDates.reduce((acc, { date, type, id }) => {
+    const key = date.toDateString();
+    if (!acc[key]) {
+      acc[key] = { HOLIDAY: [], ACADEMIC: [], IMPORTANT: [] };
     }
-    acc[date.toDateString()].push({ type, id });
+    acc[key][type].push(id);
     return acc;
-  }, {} as { [key: string]: { type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT"; id: string }[] });
+  }, {} as MarkersSpecialDate);
 
   function setTileContent({ date, view }: { date: Date; view: string }) {
     return (
       view === "month" && (
         <HighlightList>
-          {specialDatesMap[date.toDateString()] && (
+          {markers[date.toDateString()] && (
             <>
-              {specialDatesMap[date.toDateString()].map((specialDate) => (
-                <HighlightItem type={specialDate.type} key={specialDate.id} />
-              ))}
+              {["IMPORTANT", "HOLIDAY", "ACADEMIC"].map((type) => {
+                if (markers[date.toDateString()][type as TypeDate].length > 0)
+                  return (
+                    <HighlightItem
+                      type={type as TypeDate}
+                      key={`${date.toDateString()}-${type}`}
+                    >
+                      {markers[date.toDateString()][type as TypeDate].length}
+                    </HighlightItem>
+                  );
+                return null;
+              })}
             </>
           )}
         </HighlightList>
