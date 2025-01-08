@@ -1,5 +1,6 @@
 import { semesterRepository } from "@server/repository/semester";
 import { tweetRepository } from "@server/repository/tweet";
+import type { Event } from "@server/schema/event";
 import { ApiResponseError } from "twitter-api-v2";
 
 function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
@@ -12,14 +13,28 @@ function dateMessage(days: number, event: "início" | "fim" = "fim"): string[] {
   return [`Faltam ${days} dias`, `para o ${event} do`];
 }
 
+function getMessageToEvent(event: Event): string {
+  const today = new Date();
+  const startAt = new Date(event.start_at as string);
+  const endAt = event.end_at ? new Date(event.end_at) : startAt;
+  const isStartToday = startAt.getTime() === today.getTime();
+  const isEndToday = endAt.getTime() === today.getTime();
+
+  return `\n\nCorre!!\n${event.title} está ${
+    isStartToday ? "começando" : isEndToday ? "acabando" : "acontecendo"
+  } hoje!!!\n`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function postTweetSemesterDay(request: Request) {
   let message = "";
+  let semesterTitle = "";
   try {
     const { days: daysToEnd, semester: currentSemester } =
       await semesterRepository.getDaysToEndCurrentSemester();
     const [daysToEndMessage, eventEndMessage] = dateMessage(daysToEnd, "fim");
     message = `${daysToEndMessage} ${eventEndMessage} semestre ${currentSemester.title} da UEFS`;
+    semesterTitle = currentSemester.title;
   } catch {
     const { days: daysToStart, semester: nextSemester } =
       await semesterRepository.getDaysToStartNextSemester();
@@ -28,9 +43,24 @@ async function postTweetSemesterDay(request: Request) {
       "início"
     );
     message = `${daysToStartMessage} ${eventStartMessage} semestre ${nextSemester.title} da UEFS`;
+    semesterTitle = nextSemester.title;
   }
 
-  message += "\n\nVeja mais em: https://semestreuefs.laerciorios.com/";
+  const semester = await semesterRepository.getSemesterByTitle(semesterTitle);
+  const events = semester.events || [];
+
+  const eventsToday = events.filter((event) => {
+    if (!event.start_at || !event.is_important) return false;
+    const startAt = new Date(event.start_at);
+    const endAt = event.end_at ? new Date(event.end_at) : startAt;
+    const today = new Date();
+    return startAt <= today && endAt >= today;
+  });
+
+  const eventMessages =
+    eventsToday.length > 0 ? getMessageToEvent(eventsToday[0]) : "";
+
+  message += `${eventMessages}\n\nVeja mais em: https://semestreuefs.laerciorios.com/`;
 
   try {
     await tweetRepository.create(message);
