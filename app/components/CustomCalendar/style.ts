@@ -27,6 +27,12 @@ export const Calendar = styled(ReactCalendar)`
     background: ${(props) => props.theme.secondary}33;
   }
 
+  .react-calendar__tile {
+    padding: 0.5rem 0.375rem;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
   .react-calendar__tile--active,
   .react-calendar__tile--active:enabled:focus {
     background: none;
@@ -44,12 +50,11 @@ export const Calendar = styled(ReactCalendar)`
 `;
 
 export const HighlightList = styled("ul")`
+  list-style: none;
   display: flex;
-  gap: 0.25rem;
+  gap: 0.125rem;
   justify-content: center;
   align-items: center;
-  margin-top: 0.25rem;
-  height: 0.4rem;
 `;
 
 interface HighlightItemProps {
@@ -57,12 +62,17 @@ interface HighlightItemProps {
 }
 
 export const HighlightItem = styled("li")<HighlightItemProps>`
-  content: "";
-  display: block;
-  width: 0.3rem;
-  height: 0.3rem;
+  width: 0.625rem;
+  height: 0.625rem;
   background: ${(props) => highlightColors[props.type]};
   border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 0.55rem;
+  color: white;
 `;
 
 export const LegendList = styled("ul")`
