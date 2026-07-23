@@ -5,10 +5,13 @@ on:
     types: [opened, synchronize]
 
 jobs: 
-  lint: 
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
       - name: "Debug"
         run: |
           ls -la
@@ -19,12 +22,12 @@ jobs:
         run: "npm run lint"
   test:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node18.12.0-chrome107
+    container: cypress/browsers:node-24.18.0-chrome-150.0.7871.128-1-ff-153.0-edge-150.0.4078.83-1
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
         with:
-          node-version: 18.17.0
+          node-version: 24.18.0
       - name: "Install Dependencies"
         run: "npm install"
       - name: "Test - Cypress"

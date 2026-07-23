@@ -12,6 +12,9 @@
     "cy:run": "cypress run",
     "test": "start-server-and-test dev http://localhost:3000 cy:run"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
@@ -27,7 +30,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/pdf-parse": "^1.1.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
