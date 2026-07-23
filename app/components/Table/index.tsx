@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Container,
   TableBody,
@@ -14,7 +15,7 @@ type Header = {
 
 interface TableProps {
   headers: Header[];
-  rows: string[][];
+  rows: React.ReactNode[][];
   aligns?: string[];
 }
 

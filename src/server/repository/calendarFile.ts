@@ -22,10 +22,19 @@ async function list(): Promise<CalendarFile[]> {
   return parsedCalendarFiles;
 }
 
+// Some servers block the default axios User-Agent in cloud environments
+const httpConfig = {
+  timeout: 30000,
+  headers: {
+    "User-Agent":
+      "Mozilla/5.0 (compatible; SemestreUEFS/1.0; +https://semestreuefs.laerciorios.com)",
+  },
+};
+
 async function listFilesInSite(): Promise<CalendarFile[]> {
   const URL =
     "http://www.prograd.uefs.br/modules/conteudo/conteudo.php?conteudo=6";
-  const response = await axios.get(URL);
+  const response = await axios.get(URL, httpConfig);
   const content = response.data;
 
   const $ = cheerio.load(content);
@@ -64,6 +73,7 @@ async function getCalendarDataByURL(url: string) {
       urlTransformed = `https://drive.usercontent.google.com/download?id=${idDrive}`;
   }
   const response = await axios.get(urlTransformed, {
+    ...httpConfig,
     responseType: "arraybuffer",
   });
   const contentBuffer = Buffer.from(response.data, "binary");
