@@ -3,6 +3,8 @@ import { ThemeProvider } from "@contexts/ThemeContext";
 import { GlobalStyle } from "app/styles/global";
 import {
   Content,
+  EventDot,
+  EventLabel,
   LoadingMessage,
   Main,
   MonthItem,
@@ -12,12 +14,13 @@ import {
 } from "./style";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
-import CustomCalendar from "@components/CustomCalendar";
+import CustomCalendar, { SpecialDate } from "@components/CustomCalendar";
 import { semesterController } from "@ui/controller/semester";
 import React from "react";
 import { Event } from "@ui/schema/event";
 import Accordion from "@components/Accordion";
 import Table from "@components/Table";
+import { EventType } from "app/styles/eventTypes";
 
 interface Semester {
   title: string;
@@ -26,15 +29,32 @@ interface Semester {
   event_groups: { [key: string]: Event[] };
 }
 
-interface SpecialDates {
-  id: string;
-  date: Date;
-  type: "HOLIDAY" | "ACADEMIC" | "IMPORTANT";
+function getEventType(event: Event): EventType {
+  if (event.is_important) return "IMPORTANT";
+  if (event.is_holiday) return "HOLIDAY";
+  return "ACADEMIC";
+}
+
+function getDates(startDate: Date, stopDate: Date) {
+  const dateArray = [];
+  const currentDate = new Date(startDate);
+  while (currentDate <= stopDate) {
+    dateArray.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dateArray;
+}
+
+// Formats the date as "dd/MM"
+function formatDate(date: Date) {
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  return `${day}/${month}`;
 }
 
 export default function Calendar() {
   const [semesters, setSemesters] = React.useState<Semester[]>([]);
-  const [specialDates, setSpecialDates] = React.useState<SpecialDates[]>([]);
+  const [specialDates, setSpecialDates] = React.useState<SpecialDate[]>([]);
   const monthList = {
     "0": "Janeiro",
     "1": "Fevereiro",
@@ -53,56 +73,29 @@ export default function Calendar() {
   const tableHeaders = [{ title: "Data" }, { title: "Evento", width: "100%" }];
   const tableAligns = ["center", "left"];
 
-  function getDates(startDate: Date, stopDate: Date) {
-    const dateArray = [];
-    const currentDate = startDate;
-    while (currentDate <= stopDate) {
-      dateArray.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-    return dateArray;
-  }
-
-  // Function to format date to string, with the format "dd/MM"
-  function formatDate(date: Date) {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    return `${day}/${month}`;
-  }
-
   React.useEffect(() => {
     semesterController.getEvents().then(({ events }) => {
       setSemesters(events);
 
-      const specialDates = events.reduce<SpecialDates[]>((acc, semester) => {
-        const semesterSpecialDates = Object.entries(
-          semester.event_groups
-        ).reduce<SpecialDates[]>((acc, [, events]) => {
-          return [
-            ...acc,
-            ...events.reduce<SpecialDates[]>((acc, event) => {
-              if (!event.start_at || !event.end_at) {
-                return acc;
-              }
-              const type = event.is_important
-                ? "IMPORTANT"
-                : event.is_holiday
-                ? "HOLIDAY"
-                : "ACADEMIC";
-              const startDate = new Date(event.start_at);
-              const endDate = new Date(event.end_at);
-              const dates = getDates(startDate, endDate);
-              const specialDates = dates.map<SpecialDates>((date) => ({
-                date,
-                type,
-                id: event.title,
-              }));
-              return [...acc, ...specialDates];
-            }, []),
-          ];
-        }, []);
-        return [...acc, ...semesterSpecialDates];
-      }, []);
+      const specialDates = events.flatMap((semester) =>
+        Object.values(semester.event_groups).flatMap((events) =>
+          events.flatMap<SpecialDate>((event) => {
+            if (!event.start_at || !event.end_at) {
+              return [];
+            }
+            const type = getEventType(event);
+            const startAt = new Date(event.start_at);
+            const endAt = new Date(event.end_at);
+            return getDates(startAt, endAt).map((date) => ({
+              date,
+              type,
+              id: event.title,
+              startAt,
+              endAt,
+            }));
+          })
+        )
+      );
       setSpecialDates(specialDates);
     });
   }, []);
@@ -157,7 +150,13 @@ export default function Calendar() {
                                 const endDate = formatDate(event.end_at);
                                 if (endDate !== date) date += ` - ${endDate}`;
                               }
-                              return [date, event.title];
+                              return [
+                                date,
+                                <EventLabel key={event.id}>
+                                  <EventDot type={getEventType(event)} />
+                                  {event.title}
+                                </EventLabel>,
+                              ];
                             })}
                             aligns={tableAligns}
                           />

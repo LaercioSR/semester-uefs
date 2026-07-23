@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { EventType, eventTypeColors } from "app/styles/eventTypes";
 
 export const Main = styled("main")`
   background-color: ${(props) => props.theme.primary};
@@ -38,7 +39,29 @@ export const MonthItem = styled("li")`
 
 export const MonthTitle = styled("h3")`
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 1rem;
+  opacity: 0.9;
+`;
+
+export const EventLabel = styled("span")`
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+`;
+
+interface EventDotProps {
+  type: EventType;
+}
+
+export const EventDot = styled("span")<EventDotProps>`
+  flex-shrink: 0;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: ${(props) => eventTypeColors[props.type]};
 `;
 
 export const LoadingMessage = styled("p")`

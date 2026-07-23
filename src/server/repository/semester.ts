@@ -212,10 +212,15 @@ async function deleteEventsInSemester(title: string): Promise<void> {
     const semester = await getSemesterByTitle(title);
     const events = semester.events || [];
 
-    events.forEach(async (event) => {
-      if (event.id)
-        await deleteDoc(doc(firebase(), `semesters/${title}/events`, event.id));
-    });
+    await Promise.all(
+      events
+        .filter((event) => event.id)
+        .map((event) =>
+          deleteDoc(
+            doc(firebase(), `semesters/${title}/events`, event.id as string)
+          )
+        )
+    );
   } catch (error) {
     return;
   }
